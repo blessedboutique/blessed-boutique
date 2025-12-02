@@ -103,5 +103,25 @@
       "waist": "34",
       "length": "23"
     }
+  },
+  {
+    "id": "1764650759973",
+    "name": "vestido prueba 2",
+    "category": "Vestidos",
+    "price": 45,
+    "sizes": [
+      "S",
+      "M"
+    ],
+    "description": "descripcion del vestido ",
+    "images": [
+      "./images/1764650758586_Imagen-de-WhatsApp-2025-12-02-a-las-00.15.42_cd7afa9c.jpg"
+    ],
+    "status": "available",
+    "measurements": {
+      "bust": "12",
+      "waist": "34",
+      "length": "56"
+    }
   }
 ]
