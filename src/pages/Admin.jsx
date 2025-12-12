@@ -31,6 +31,8 @@ const Admin = () => {
     const [imageFiles, setImageFiles] = useState([]);
     const [imagePreviews, setImagePreviews] = useState([]);
 
+    const [isGithubConnected, setIsGithubConnected] = useState(false);
+
     useEffect(() => {
         // Check if user is already authenticated
         const authStatus = localStorage.getItem('admin_authenticated');
@@ -56,9 +58,11 @@ const Admin = () => {
             setProducts(data.content);
             setSha(data.sha);
             setStatus('Productos cargados correctamente.');
+            setIsGithubConnected(true);
         } catch (error) {
             console.error(error);
             setStatus('Error al cargar productos. Verifica tus credenciales.');
+            setIsGithubConnected(false);
         } finally {
             setLoading(false);
         }
@@ -303,6 +307,11 @@ const Admin = () => {
                     <button onClick={handleSaveCredentials} className="btn btn-outline">Conectar</button>
                     <button onClick={loadProducts} className="btn btn-outline" title="Recargar productos desde GitHub">🔄</button>
                 </div>
+
+                <div className={`${styles.connectionStatus} ${isGithubConnected ? styles.connected : styles.disconnected}`}>
+                    {isGithubConnected ? '✅ CONECTADO A GITHUB' : '❌ DESCONECTADO - NO SE PUEDEN GUARDAR CAMBIOS'}
+                </div>
+
                 {status && <p className={styles.status}>{status}</p>}
             </div>
 
@@ -314,26 +323,26 @@ const Admin = () => {
                     <form onSubmit={handleSubmit} className={styles.form}>
                         <div className={styles.formGroup}>
                             <label>Nombre</label>
-                            <input type="text" name="name" value={newProduct.name} onChange={handleInputChange} required />
+                            <input type="text" name="name" value={newProduct.name} onChange={handleInputChange} required disabled={!isGithubConnected} />
                         </div>
 
                         <div className={styles.row}>
                             <div className={styles.formGroup}>
                                 <label>Categoría</label>
-                                <select name="category" value={newProduct.category} onChange={handleInputChange}>
+                                <select name="category" value={newProduct.category} onChange={handleInputChange} disabled={!isGithubConnected}>
                                     <option value="Vestidos">Vestidos</option>
                                     <option value="Faldas">Faldas</option>
                                 </select>
                             </div>
                             <div className={styles.formGroup}>
                                 <label>Precio</label>
-                                <input type="number" name="price" value={newProduct.price} onChange={handleInputChange} required />
+                                <input type="number" name="price" value={newProduct.price} onChange={handleInputChange} required disabled={!isGithubConnected} />
                             </div>
                         </div>
 
                         <div className={styles.formGroup}>
                             <label>Imágenes (Selecciona varias)</label>
-                            <input type="file" accept="image/*" multiple onChange={handleImageSelect} />
+                            <input type="file" accept="image/*" multiple onChange={handleImageSelect} disabled={!isGithubConnected} />
                             <div className={styles.previewContainer}>
                                 {imagePreviews.map((src, index) => (
                                     <img key={index} src={src} alt="Preview" className={styles.previewThumb} />
@@ -343,7 +352,7 @@ const Admin = () => {
 
                         <div className={styles.formGroup}>
                             <label>Descripción</label>
-                            <textarea name="description" value={newProduct.description} onChange={handleInputChange} required />
+                            <textarea name="description" value={newProduct.description} onChange={handleInputChange} required disabled={!isGithubConnected} />
                         </div>
 
                         <div className={styles.formGroup}>
@@ -355,6 +364,7 @@ const Admin = () => {
                                             type="checkbox"
                                             checked={newProduct.sizes.includes(size)}
                                             onChange={() => handleSizeChange(size)}
+                                            disabled={!isGithubConnected}
                                         />
                                         {size}
                                     </label>
@@ -365,13 +375,13 @@ const Admin = () => {
                         <div className={styles.formGroup}>
                             <label>Medidas</label>
                             <div className={styles.row}>
-                                <input type="text" name="measurements.bust" placeholder="Busto" value={newProduct.measurements.bust} onChange={handleInputChange} />
-                                <input type="text" name="measurements.waist" placeholder="Cintura" value={newProduct.measurements.waist} onChange={handleInputChange} />
-                                <input type="text" name="measurements.length" placeholder="Largo" value={newProduct.measurements.length} onChange={handleInputChange} />
+                                <input type="text" name="measurements.bust" placeholder="Busto" value={newProduct.measurements.bust} onChange={handleInputChange} disabled={!isGithubConnected} />
+                                <input type="text" name="measurements.waist" placeholder="Cintura" value={newProduct.measurements.waist} onChange={handleInputChange} disabled={!isGithubConnected} />
+                                <input type="text" name="measurements.length" placeholder="Largo" value={newProduct.measurements.length} onChange={handleInputChange} disabled={!isGithubConnected} />
                             </div>
                         </div>
 
-                        <button type="submit" className="btn btn-primary" disabled={loading}>
+                        <button type="submit" className="btn btn-primary" disabled={loading || !isGithubConnected}>
                             {loading ? 'Guardando...' : 'Guardar Producto'}
                         </button>
                     </form>
@@ -395,6 +405,7 @@ const Admin = () => {
                                         onClick={() => toggleProductStatus(p.id)}
                                         className="btn btn-outline"
                                         style={{ fontSize: '0.8rem', padding: '5px 10px' }}
+                                        disabled={!isGithubConnected}
                                     >
                                         {p.status === 'sold' ? 'Marcar Disp.' : 'Marcar Vendido'}
                                     </button>
@@ -402,6 +413,7 @@ const Admin = () => {
                                         onClick={() => deleteProduct(p.id)}
                                         className="btn btn-outline"
                                         style={{ fontSize: '0.8rem', padding: '5px 10px', borderColor: 'red', color: 'red' }}
+                                        disabled={!isGithubConnected}
                                     >
                                         Eliminar
                                     </button>
