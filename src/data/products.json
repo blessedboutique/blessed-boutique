@@ -40,5 +40,26 @@
       "waist": "72cm",
       "length": "60cm"
     }
+  },
+  {
+    "id": "1765508613539",
+    "name": "Falda tull ",
+    "category": "Faldas",
+    "price": 75,
+    "sizes": [
+      "S",
+      "M"
+    ],
+    "description": "FALDA TULL\n2 CAPAS DE TULL\nFORRO INTERNO\nCINTURA ELÁSTICA",
+    "images": [
+      "https://raw.githubusercontent.com/blessedboutique/catalogo/main/public/images/1765508605826_20251201_204858(1).jpg",
+      "https://raw.githubusercontent.com/blessedboutique/catalogo/main/public/images/1765508610265_20251201_205516.jpg"
+    ],
+    "status": "available",
+    "measurements": {
+      "bust": "",
+      "waist": "",
+      "length": "62 cm"
+    }
   }
 ]
